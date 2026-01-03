@@ -1,0 +1,22 @@
+{
+    "cSpell.words": [
+        "centralising",
+        "ndarray",
+        "neighbour",
+        "neighbours",
+        "powerset",
+        "Selfstudy"
+    ],
+
+    "editor.quickSuggestions": { "other": false, "comments": true, "strings": false },
+    "editor.suggestOnTriggerCharacters": false,
+    "editor.inlineSuggest.enabled": false,
+    "editor.wordBasedSuggestions": "off",
+    "editor.tabCompletion": "on", 
+    "editor.suggest.showSnippets": false,
+    "editor.suggest.showWords": false,
+
+    // If using GitHub Copilot extension:
+    "github.copilot.enable": false,
+    "github.copilot.inlineSuggest.enable": false
+}
