@@ -3,7 +3,9 @@ import requests
 
 def get_weather_data(latitude:float, longitude:float, timezone:str):
     """
-    Get the temperature (in °C), elevation (in meters) and wind-speed (in km/h)
+    Client for the Open-Meteo API.
+    
+    Gets the temperature (in °C), elevation (in meters) and wind-speed (in km/h)
     for a given latitude, longitude and timezone.
 
     Args:
@@ -13,7 +15,7 @@ def get_weather_data(latitude:float, longitude:float, timezone:str):
     Returns:
         dict: A dictionary containing temperature (float) and elevation (float)
     """
-    # Construct the url including parameters
+    # Construct the URL with parameters
     url = "https://api.open-meteo.com/v1/forecast"
     params = {
         "latitude": latitude,
@@ -26,9 +28,9 @@ def get_weather_data(latitude:float, longitude:float, timezone:str):
     try:
         response = requests.get(url, params=params, timeout=10)
         data = response.json()
-        temperature = data.get("current").get("temperature_2m")
-        wind_speed = data.get("current").get("wind_speed_10m")
-        elevation = data.get("elevation")
+        temperature = data.get("current", {}).get("temperature_2m", None)
+        wind_speed = data.get("current", {}).get("wind_speed_10m", None)
+        elevation = data.get("elevation", None)
         return {
             "temperature": temperature,
             "wind_speed": wind_speed,

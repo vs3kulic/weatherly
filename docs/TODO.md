@@ -3,7 +3,8 @@
 ## Project
 [x] Set up project (Create directory, virtual environment, README...)
 [-] Write the project outline
-[-] Create .txt file with quotes
+[-] Create .txt file with Quotes
+[-] Set up clothing tips per Temperature? Wind? Rain?
 [-] Research city functionality (user selects city, app fetches lat/long)
 [-] Support creation of multiple City objects using the same Weather class to fetch data for each city.
 
