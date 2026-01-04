@@ -1,4 +1,5 @@
 import requests
+from weather import Weather
 
 
 def get_weather_data(latitude:float, longitude:float, timezone:str):
@@ -102,6 +103,9 @@ def main():
         print(f"Wind-speed:     {weather["wind_speed"]} km/h.")
     else:
         print("Could not fetch weather data.")
+
+    w1 = Weather(lat_, lon_, tz_)
+    print(w1)
 
 if __name__ == "__main__":
     main()
