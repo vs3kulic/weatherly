@@ -30,13 +30,13 @@ class APIClient:
 
 
     @staticmethod
-    def get_weather(latitude:float, longitude:float, timezone:str):
+    def get_weather(latitude:float, longitude:float, timezone:str, **weather_params):
         """Fetch weather data for the given coordinates."""
         params = {
             "latitude": latitude,
             "longitude": longitude,
             "timezone": timezone,
-            "current": "temperature_2m,wind_speed_10m"
+            **weather_params
         }
         try:
             response = requests.get(APIClient.BASE_URL_WEATHER, params=params, timeout=10)

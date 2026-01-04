@@ -45,12 +45,13 @@ class Weather:
             raise ValueError(f"Longitude must be between -180 and 180, got {longitude}")
 
         # Get weather data
-        weather_data = APIClient.get_weather(latitude, longitude, timezone)
+        weather_data = APIClient.get_weather(latitude, longitude, timezone, hourly="temperature_2m", current="wind_speed_10m")
         if not isinstance(weather_data, dict):
             raise ValueError("Invalid weather data received from APIClient.")
 
         # Parse weather information
-        temperature = weather_data.get("current", {}).get("temperature_2m", 0.0)
+        hourly_temperatures = weather_data.get("hourly", {}).get("temperature_2m", 0.0)
+        temperature = min(hourly_temperatures)
         wind_speed = weather_data.get("current", {}).get("wind_speed_10m", 0.0)
         elevation = weather_data.get("elevation", 0.0)
 
