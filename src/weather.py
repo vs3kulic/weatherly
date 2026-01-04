@@ -1,60 +1,57 @@
 """This file holds the definition of the Weather class."""
-import requests
+from api_clients import APIClient
 
 
 class Weather:
     """A class to represent the Weather object."""
 
-    def __init__(self, latitude: float, longitude: float, timezone: str, 
+    def __init__(self, latitude: float, longitude: float, timezone: str,
                 temperature: float = None, wind_speed: float = None, elevation: float = None):
         if not -90 <= latitude <= 90:
             raise ValueError(f"Latitude must be between -90 and 90, got {latitude}")
         if not -180 <= longitude <= 180:
             raise ValueError(f"Longitude must be between -180 and 180, got {longitude}")
-        if not isinstance(timezone, str) or not timezone.strip():
-            raise ValueError("Timezone must be a non-empty string.")
         self._latitude = latitude
         self._longitude = longitude
         self._timezone = timezone
-        # Calculated attributes (default=None)
+        # Store calculated attributes (default=None)
         self._temperature = temperature
         self._wind_speed = wind_speed
         self._elevation = elevation
 
 
     def __str__(self):
-        return (f"Location:             {self._latitude}, {self._longitude} ({self._timezone})\n"
+        return (f"Location:             {self._latitude}, {self._longitude}\n"
                 f"Temperature (in °C):  {self._temperature}\n"
                 f"Wind speed (in km/h): {self._wind_speed}\n"
                 f"Elevation:            {self._elevation}")
 
 
     @classmethod
-    def from_coordinates(cls, latitude, longitude, timezone):
-        """Create a Weather instance and fetch data."""
-        url = "https://api.open-meteo.com/v1/forecast"
-        params = {
-            "latitude": latitude,
-            "longitude": longitude,
-            "timezone": timezone,
-            "current": "temperature_2m,wind_speed_10m"
-        }
-        try:
-            response = requests.get(url, params=params, timeout=10)
-            data = response.json()
-            temperature = data.get("current", {}).get("temperature_2m", None)
-            wind_speed = data.get("current", {}).get("wind_speed_10m", None)
-            elevation = data.get("elevation", None)
+    def from_coordinates(cls, latitude, longitude, timezone=None):
+        """Create a Weather instance."""
+        # Validate latitude and longitude
+        if not -90 <= latitude <= 90:
+            raise ValueError(f"Latitude must be between -90 and 90, got {latitude}")
+        if not -180 <= longitude <= 180:
+            raise ValueError(f"Longitude must be between -180 and 180, got {longitude}")
 
-            return Weather(latitude, longitude, timezone, temperature, wind_speed, elevation)
+        # Explicit default assignment
+        if timezone is None:
+            timezone = "CET"
 
-        except requests.exceptions.HTTPError as http_err:
-            print(f"HTTP Error occurred: {http_err}")
-        except requests.exceptions.RequestException as err:
-            print(f"An error occurred: {err}")
+        # Call API Client class to get weather data
+        weather_data = APIClient.get_weather(latitude, longitude)
+        if not isinstance(weather_data, dict):
+            raise ValueError("Invalid weather data received from APIClient.")
 
-        # Return a default Weather object if the API call fails
-        return Weather(latitude, longitude, timezone)
+        # Parse the information from the response JSON
+        temperature = weather_data.get("current", {}).get("temperature_2m", 0.0)
+        wind_speed = weather_data.get("current", {}).get("wind_speed_10m", 0.0)
+        elevation = weather_data.get("elevation", 0.0)
+
+        # Create the weather object
+        return Weather(latitude, longitude, timezone, temperature, wind_speed, elevation)
 
 
     @property
@@ -74,15 +71,15 @@ class Weather:
 
 
 def main():
-    lat_ = 48.21
-    lon_ = 16.37
-    tz_ = "CET"
+    # Hard-coded Latitude and Longitude values for Demo
+    lat = 48.21
+    lon = 16.37
 
     # Create Weather object using Class Factory Method
-    w = Weather.from_coordinates(lat_, lon_, tz_)
-    print(f"Temperature:    {w.temperature}° Celsius\n"
-          f"Wind speed:     {w.temperature} km/h\n"
-          f"Elevation:      {w.elevation} m above sea-level")
+    w2 = Weather.from_coordinates(lat, lon)
+    print(f"Temperature:    {w2.temperature}° Celsius\n"
+          f"Wind speed:     {w2.wind_speed} km/h\n"
+          f"Elevation:      {w2.elevation} m above sea-level")
 
 
 if __name__ == "__main__":
