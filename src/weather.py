@@ -10,7 +10,7 @@ class Weather:
         if not -90 <= latitude <= 90:
             raise ValueError(f"Latitude must be between -90 and 90, got {latitude}")
         if not -180 <= longitude <= 180:
-            raise ValueError(f"Longitude must be between -100 and 100, got {longitude}")
+            raise ValueError(f"Longitude must be between -180 and 180, got {longitude}")
         if not isinstance(timezone, str) or not timezone.strip():
             raise ValueError("Timezone must be a non-empty string.")
         self._latitude = latitude
@@ -52,7 +52,7 @@ class Weather:
             print(f"HTTP Error occurred: {http_err}")
         except requests.exceptions.RequestException as err:
             print(f"An error occurred: {err}")
-        
+
         # Return a default Weather object if the API call fails
         return Weather(latitude, longitude, timezone)
 
@@ -60,25 +60,17 @@ class Weather:
     @property
     def temperature(self):
         """Get the current temperature"""
-        if self._temperature is None:
-            print("Warning: Temperature could not be fetched.")
         return self._temperature
 
     @property
     def wind_speed(self):
         """Get the current wind speed."""
-        if self._wind_speed is None:
-            print("Warning: Wind speed could not be fetched.")
         return self._wind_speed
 
     @property
     def elevation(self):
         """Get the elevation of the measurement."""
-        if self._elevation is None:
-            print("Warning: Elevation could not be fetched.")
         return self._elevation
-
-    # TODO: Add input validation in the constructor
 
 
 def main():
@@ -88,7 +80,9 @@ def main():
 
     # Create Weather object using Class Factory Method
     w = Weather.from_coordinates(lat_, lon_, tz_)
-    print(w.temperature)
+    print(f"Temperature:    {w.temperature}° Celsius\n"
+          f"Wind speed:     {w.temperature} km/h\n"
+          f"Elevation:      {w.elevation} m above sea-level")
 
 
 if __name__ == "__main__":
