@@ -30,12 +30,12 @@ class APIClient:
 
 
     @staticmethod
-    def get_weather(latitude:float, longitude:float):
+    def get_weather(latitude:float, longitude:float, timezone:str):
         """Fetch weather data for the given coordinates."""
         params = {
             "latitude": latitude,
             "longitude": longitude,
-            "timezone": "CET",
+            "timezone": timezone,
             "current": "temperature_2m,wind_speed_10m"
         }
         try:
