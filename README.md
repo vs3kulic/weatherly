@@ -12,3 +12,19 @@ Bonus: A quote for a day.
 ## Integrations
 - Meteo API
 - Nominatim API (tbd)
+
+## Project Structure
+```
+Weatherly/
+├── src/
+│   ├── main.py              # Main interactive application
+│   ├── weather.py           # Weather class
+│   └── api_clients.py       # APIClient class
+├── docs/
+│   └── TODO.md
+├── content/
+│   └── notes.txt
+│   └── quotes.txt
+└── README.md
+└── requirements.txt
+```
