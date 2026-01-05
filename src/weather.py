@@ -22,38 +22,67 @@ class Weather:
 
     
     @staticmethod
-    def _get_coordinates(city, country):
+    def _get_coordinates(city:str, country:str) -> tuple[float, float]:
+        # Call Nominatim API via the API Client
         coordinates = APIClient.get_coordinates(city, country)
+
+        # Validate the returned list[dict] object (from JSON)
         if not coordinates or len(coordinates) == 0:
             raise ValueError(f"No coordinates found for {city}, {country}")
+        if not isinstance(coordinates, list):
+            raise ValueError("Invalid coordinates received from APIClient.")
+
+        # Parse the coordinates object for required values
         latitude = float(coordinates[0].get("lat"))
         longitude = float(coordinates[0].get("lon"))
-        return latitude, longitude
 
-    @classmethod
-    def for_city(cls, city, country, timezone=None):
-        """Create a Weather instance for a city and country."""
-        # Validate timezone (Explicit Default Assignment or Mutable Default Argument Guard)
-        if timezone is None:
-            timezone = "CET"
-        
-        # Get and validate coordinates
-        latitude, longitude = cls._get_coordinates(city, country)
+        # Validate the received values
         if not -90 <= latitude <= 90:
             raise ValueError(f"Latitude must be between -90 and 90, got {latitude}")
         if not -180 <= longitude <= 180:
             raise ValueError(f"Longitude must be between -180 and 180, got {longitude}")
 
-        # Get weather data
+        return latitude, longitude
+
+
+    @staticmethod
+    def _get_weather(latitude:float, longitude:float, timezone:str = None) -> tuple[float, float, float]:
+        # Set explicit default value
+        if timezone is None:
+            timezone = "CET"
+
+        # Call Meteo API via the API Client
         weather_data = APIClient.get_weather(latitude, longitude, timezone, hourly="temperature_2m", current="wind_speed_10m")
+
+        # Validate the returned dict object (from JSON)
+        if not weather_data or len(weather_data) == 0:
+            raise ValueError("No weather data received from APIClient")
         if not isinstance(weather_data, dict):
             raise ValueError("Invalid weather data received from APIClient.")
 
-        # Parse weather information
+        # Parse the weather_data object for required values
         hourly_temperatures = weather_data.get("hourly", {}).get("temperature_2m", 0.0)
         temperature = min(hourly_temperatures)
         wind_speed = weather_data.get("current", {}).get("wind_speed_10m", 0.0)
         elevation = weather_data.get("elevation", 0.0)
+
+        return temperature, wind_speed, elevation
+
+
+    @classmethod
+    def for_city(cls, city, country):
+        """Create a Weather instance for a city and country."""
+        # Validate inputs
+        if not city.strip() or not country.strip():
+            raise ValueError("City and country must not be empty.")
+        if not isinstance(city, str) or not isinstance(country, str):
+            raise ValueError("City and country must be non-empty strings.")
+
+        # Get coordinates
+        latitude, longitude = cls._get_coordinates(city, country)
+
+        # Get weather data from coordinates
+        temperature, wind_speed, elevation = cls._get_weather(latitude, longitude)
 
         # Create and return weather object
         return Weather(city, country, temperature, wind_speed, elevation)
@@ -76,7 +105,7 @@ class Weather:
 
 
 def main():
-    # Hard-coded city and country values for Demo
+    """THe main() function demonstrates the Weather class."""
     city = "Vienna"
     country = "Austria"
 
