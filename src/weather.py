@@ -15,10 +15,10 @@ class Weather:
 
 
     def __str__(self):
-        return (f"Location:             {self._city}, {self._country}\n"
-                f"Temperature (in °C):  {self._temperature}\n"
-                f"Wind speed (in km/h): {self._wind_speed}\n"
-                f"Elevation:            {self._elevation}")
+        return (f"Location:                 {self._city}, {self._country}\n"
+                f"Temperature (in °C):      {self._temperature}\n"
+                f"Wind speed (in km/h):     {self._wind_speed}\n"
+                f"Elevation (in m):         {self._elevation}")
 
     
     @staticmethod

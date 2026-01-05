@@ -6,12 +6,17 @@ from glob import glob
 
 def get_user_input():
     """Gets the city and country inputs from user."""
-    pass
+    city = input("\U0001F4CD Please choose a city: ").strip()
+    country = input(f"\U0001F30D In which country is {city}: ").strip()
+    return city, country
 
 
-def display_weather():
+def display_weather(weather_obj):
     """Display weather information in a formatted way."""
-    pass
+    print("WEATHER REPORT")
+    print("-" * 46)
+    print(weather_obj)
+    print("-" * 46)
 
 
 def get_user_note():
@@ -26,9 +31,18 @@ def display_quote():
 
 def main():
     """Main application flow."""
-    print("Welcome to Weatherly - Your Personal Weather Assistant! 🌤️")  # Check Unicode character
-    print("-" * 58)
-    pass
+    print("=" * 46)
+    print("🌤️  WELCOME TO WEATHERLY 🌤️\n")  # Check Unicode character
+    print("I'm your personal Weather Assistant!")
+    print()
+    city, country = get_user_input()
+    print()
+    print("OK! Fetching the data...")
+    print()
+    weather = Weather.for_city(city, country)
+    display_weather(weather)
+    # Get user note
+    # Display quote
 
 
 if __name__ == "__main__":
