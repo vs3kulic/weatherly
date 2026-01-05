@@ -22,7 +22,7 @@ WEATHER_QUOTES = {
             15: "Strong cold winds separate the committed from the curious."
         }
     },
-    
+
     "cool": {  # 5°C to 15°C
         "calm": {
             16: "Cool and calm - perfect weather for clear thinking.",
@@ -46,7 +46,7 @@ WEATHER_QUOTES = {
             30: "Strong cool winds separate dreams from action."
         }
     },
-    
+
     "mild": {  # 15°C to 25°C
         "calm": {
             31: "Perfect weather, perfect moment, perfect you.",
@@ -70,7 +70,7 @@ WEATHER_QUOTES = {
             45: "When mild weather gets windy, adventure calls."
         }
     },
-    
+
     "warm": {  # 25°C to 35°C
         "calm": {
             46: "Warm and still - meditation weather.",
@@ -94,7 +94,7 @@ WEATHER_QUOTES = {
             60: "Hot gusts remind you that you're unstoppable."
         }
     },
-    
+
     "hot": {  # Above 35°C
         "calm": {
             61: "In intense heat and stillness, find your inner cool.",
