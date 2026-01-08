@@ -32,7 +32,8 @@ def display_quote():
 def main():
     """Main application flow."""
     print("=" * 46)
-    print("🌤️  WELCOME TO WEATHERLY 🌤️\n")  # Check Unicode character
+    person1 = "Luka \U0001F917"
+    print(f"🌤️  HELLO {person1.upper()}! WELCOME TO WEATHERLY 🌤️\n")  # Check Unicode character
     print("I'm your personal Weather Assistant!")
     print()
     city, country = get_user_input()
